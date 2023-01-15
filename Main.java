@@ -1,5 +1,7 @@
 package bankingApp;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.*;
 
 public class Main {
@@ -35,17 +37,48 @@ public class Main {
     public static void createAccount (HashMap<String, Integer> account) {
         Random rand = new Random();
         Random rand2 = new Random();
-        long upper = 9999999999L;
-        long lower = 1000000000L;
+        long upper = 999999999L;
+        long lower = 100000000L;
         String accountNum = "400000" + (rand.nextLong( upper - lower + 1) + lower);
 
-        int accountNumInt = Integer.parseInt(accountNum);
+        accountNum = checkSum(accountNum);
 
 
         int pin = rand2.nextInt(9999 - 1000 + 1) + 1000;
         System.out.println("\nYour card has been created\nYour card number:\n" + accountNum +
                 "\nYour card PIN:\n" + pin);
         account.put(accountNum, pin);
+    }
+
+
+    //Luhn's Algorithm to check card validity
+    public static String checkSum(String accountNum){
+        char numChar;
+        int numInteger;
+        int sum = 0;
+        final int MAX_NUM = 10;
+        int checkSum = 0;
+        for (int i = 0; i < accountNum.length(); i++) {
+            numChar = accountNum.charAt(i);
+            numInteger = Integer.parseInt(String.valueOf(numChar));
+
+            if (i % 2 == 0) {
+                numInteger *= 2;
+            }
+
+            if (numInteger > 9) {
+                numInteger -= 9;
+            }
+
+            sum += numInteger;
+        }
+
+        for (int i = 0; i < MAX_NUM; i++) {
+            if ((sum + i) % 10 == 0) {
+                checkSum = i;
+            }
+        }
+        return accountNum + checkSum;
     }
 
     public static void logIn (HashMap<String, Integer> account) {
