@@ -3,6 +3,10 @@
  */
 package bankingapp;
 
+import org.sqlite.SQLiteDataSource;
+
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Scanner;
@@ -123,4 +127,21 @@ public class App {
         } while (response != 0);
     }
 
+    public static void createDB() {
+        String url = "jdbc:sqlite:card.db";
+
+        SQLiteDataSource dataSource = new SQLiteDataSource();
+        dataSource.setUrl(url);
+
+        try (Connection con = dataSource.getConnection()) {
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void insertDB(int id, String num, String pin){
+
+    }
 }
