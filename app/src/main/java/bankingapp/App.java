@@ -7,42 +7,64 @@ import org.sqlite.SQLiteDataSource;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Scanner;
 
 public class App {
     static Scanner input = new Scanner(System.in);
-
+    static SQLiteDataSource dataSource = new SQLiteDataSource();
 
     public static void main(String[] args) {
+        dataSource.setUrl(args[0]);
 
-        int response = -1;
-        HashMap<String, Integer> account = new HashMap<>();
+        try (Connection con = dataSource.getConnection()) {
 
-        do {
-            System.out.println("\n1. Create an account\n" +
-                    "2. Log into account\n" +
-                    "0. Exit");
+            //need only for testing
+            if (con.isValid(5))
+                System.out.println();
 
-            response = input.nextInt();
-            switch (response) {
-                case 1:
-                    createAccount(account);
-                    break;
+            //TODO create statement
+            try (Statement statement = con.createStatement()) {
 
-                case 2:
-                    logIn(account);
-                    break;
+                //Create DB
+                createDB(statement);
+
+                //Initialize response and Map
+                int response = -1;
+                HashMap<String, Integer> account = new HashMap<>();
+
+                do {
+                    System.out.println("\n1. Create an account\n" +
+                            "2. Log into account\n" +
+                            "0. Exit");
+
+                    response = input.nextInt();
+                    switch (response) {
+                        case 1:
+                            createAccount(statement,account);
+                            break;
+
+                        case 2:
+                            logIn(account);
+                            break;
+                    }
+                } while (response != 0);
+
+                System.out.println("\nBye!");
+
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-        } while (response != 0);
 
-        System.out.println("\nBye!");
-
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 
-    public static void createAccount (HashMap<String, Integer> account) {
+    public static void createAccount (Statement statement, HashMap<String, Integer> account) throws SQLException {
         Random rand = new Random();
         Random rand2 = new Random();
         long upper = 999999999L;
@@ -51,11 +73,11 @@ public class App {
 
         accountNum = checkSum(accountNum);
 
-
         int pin = rand2.nextInt(9999 - 1000 + 1) + 1000;
         System.out.println("\nYour card has been created\nYour card number:\n" + accountNum +
                 "\nYour card PIN:\n" + pin);
         account.put(accountNum, pin);
+        insertDB(statement, accountNum, String.valueOf(pin));
     }
 
 
@@ -127,21 +149,17 @@ public class App {
         } while (response != 0);
     }
 
-    public static void createDB() {
-        String url = "jdbc:sqlite:card.db";
-
-        SQLiteDataSource dataSource = new SQLiteDataSource();
-        dataSource.setUrl(url);
-
-        try (Connection con = dataSource.getConnection()) {
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public static void createDB(Statement statement) throws SQLException{
+        statement.executeUpdate("CREATE TABLE IF NOT EXISTS card(" +
+                        "id INTEGER, " +
+                        "number TEXT," +
+                        "pin TEXT," +
+                        "balance INTEGER DEFAULT 0)");
 
     }
 
-    public static void insertDB(int id, String num, String pin){
-
+    public static int insertDB(Statement statement, String number, String pinNum) throws SQLException{
+        return statement.executeUpdate("INSERT INTO card (number, pin) VALUES " +
+                "(number, pinNum)");
     }
 }
