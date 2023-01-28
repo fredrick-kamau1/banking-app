@@ -73,11 +73,12 @@ public class App {
 
         accountNum = checkSum(accountNum);
 
-        int pin = rand2.nextInt(9999 - 1000 + 1) + 1000;
+        int pinNum = rand2.nextInt(9999 - 1000 + 1) + 1000;
         System.out.println("\nYour card has been created\nYour card number:\n" + accountNum +
-                "\nYour card PIN:\n" + pin);
-        account.put(accountNum, pin);
-        insertDB(statement, accountNum, String.valueOf(pin));
+                "\nYour card PIN:\n" + pinNum);
+        account.put(accountNum, pinNum);
+        insertDB(statement, accountNum, String.valueOf(pinNum));
+        //statement.executeUpdate("INSERT INTO card (number, pin) VALUES ('"+accountNum+"','"+pinNum+"')");
     }
 
 
@@ -152,14 +153,13 @@ public class App {
     public static void createDB(Statement statement) throws SQLException{
         statement.executeUpdate("CREATE TABLE IF NOT EXISTS card(" +
                         "id INTEGER, " +
-                        "number TEXT," +
+                        "num TEXT," +
                         "pin TEXT," +
                         "balance INTEGER DEFAULT 0)");
 
     }
 
-    public static int insertDB(Statement statement, String number, String pinNum) throws SQLException{
-        return statement.executeUpdate("INSERT INTO card (number, pin) VALUES " +
-                "(number, pinNum)");
+    public static void insertDB(Statement statement, String number, String pinNum) throws SQLException{
+        statement.executeUpdate("INSERT INTO card (num,pin)VALUES ('"+number+"', '"+pinNum+"')");
     }
 }
