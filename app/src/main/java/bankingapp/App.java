@@ -22,8 +22,10 @@ public class App {
         try (Connection con = dataSource.getConnection()) {
 
             //need only for testing
-            if (con.isValid(5))
+            /*if (con.isValid(5))
                 System.out.println();
+
+             */
 
             //TODO create statement
             try (Statement statement = con.createStatement()) {
@@ -35,6 +37,7 @@ public class App {
                 int response = -1;
                 HashMap<String, Integer> account = new HashMap<>();
 
+                start:
                 do {
                     System.out.println("\n1. Create an account\n" +
                             "2. Log into account\n" +
@@ -48,7 +51,7 @@ public class App {
 
                         case 2:
                             logIn(account);
-                            break;
+                            break start;
                     }
                 } while (response != 0);
 
@@ -114,8 +117,8 @@ public class App {
 
     public static void logIn (HashMap<String, Integer> account) {
         int response = -1;
-        profile:
-        do {
+
+
             System.out.println("\nEnter your card number:");
             String ans = input.next();
             System.out.println("Enter your PIN:");
@@ -126,6 +129,7 @@ public class App {
                 int answer = -1;
                 int balance = 0;
 
+                profile:
                 do {
                     System.out.println("\n1. Balance\n" +
                             "2. Log out\n" +
@@ -138,16 +142,16 @@ public class App {
                             System.out.println("\nBalance: " + balance);
                             break;
                         case 2:
-                        case 0:
                             System.out.println("\nYou have successfully logged out");
-                            break profile;
+                            break;
+
                     }
                 } while (answer != 0);
 
             } else {
                 System.out.println("Wrong card number or PIN");
             }
-        } while (response != 0);
+
     }
 
     public static void createDB(Statement statement) throws SQLException{
