@@ -17,17 +17,11 @@ public class App {
     static SQLiteDataSource dataSource = new SQLiteDataSource();
 
     public static void main(String[] args) {
+        //String url set as program parameter
         dataSource.setUrl(args[0]);
 
+        //Connect to the database
         try (Connection con = dataSource.getConnection()) {
-
-            //need only for testing
-            /*if (con.isValid(5))
-                System.out.println();
-
-             */
-
-            //TODO create statement
             try (Statement statement = con.createStatement()) {
 
                 //Create DB
@@ -37,7 +31,6 @@ public class App {
                 int response = -1;
                 HashMap<String, Integer> account = new HashMap<>();
 
-                start:
                 do {
 
                     System.out.println("\n1. Create an account\n" +
@@ -49,32 +42,8 @@ public class App {
                         case 1:
                             createAccount(statement,account);
                             break;
-
                         case 2:
                             logIn(account);
-
-                            int balance = 0;
-                            int answer;
-                            subModule:
-                            do {
-                                System.out.println("\n1. Balance\n" +
-                                        "2. Log out\n" +
-                                        "0. Exit");
-
-                                answer = input.nextInt();
-
-                                switch (answer) {
-                                    case 1:
-                                        System.out.println("\nBalance: " + balance);
-                                        break;
-                                    case 2:
-                                        System.out.println("\nYou have successfully logged out");
-                                        break subModule;
-                                    case 0:
-                                        break start;
-                                }
-                            } while (true);
-
                     }
                 } while (response != 0);
 
@@ -151,7 +120,7 @@ public class App {
                 int answer = -1;
                 int balance = 0;
 
-               /* subModule:
+               subModule:
                 do {
                     System.out.println("\n1. Balance\n" +
                             "2. Log out\n" +
@@ -166,10 +135,11 @@ public class App {
                         case 2:
                             System.out.println("\nYou have successfully logged out");
                             break subModule;
+                        case 0:
+                            System.exit(0);
                     }
                 } while (answer != 0);
 
-                */
 
             } else {
                 System.out.println("Wrong card number or PIN");
