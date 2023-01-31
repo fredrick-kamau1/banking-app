@@ -39,6 +39,7 @@ public class App {
 
                 start:
                 do {
+
                     System.out.println("\n1. Create an account\n" +
                             "2. Log into account\n" +
                             "0. Exit");
@@ -51,7 +52,29 @@ public class App {
 
                         case 2:
                             logIn(account);
-                            break start;
+
+                            int balance = 0;
+                            int answer;
+                            subModule:
+                            do {
+                                System.out.println("\n1. Balance\n" +
+                                        "2. Log out\n" +
+                                        "0. Exit");
+
+                                answer = input.nextInt();
+
+                                switch (answer) {
+                                    case 1:
+                                        System.out.println("\nBalance: " + balance);
+                                        break;
+                                    case 2:
+                                        System.out.println("\nYou have successfully logged out");
+                                        break subModule;
+                                    case 0:
+                                        break start;
+                                }
+                            } while (true);
+
                     }
                 } while (response != 0);
 
@@ -118,7 +141,6 @@ public class App {
     public static void logIn (HashMap<String, Integer> account) {
         int response = -1;
 
-
             System.out.println("\nEnter your card number:");
             String ans = input.next();
             System.out.println("Enter your PIN:");
@@ -129,7 +151,7 @@ public class App {
                 int answer = -1;
                 int balance = 0;
 
-                profile:
+               /* subModule:
                 do {
                     System.out.println("\n1. Balance\n" +
                             "2. Log out\n" +
@@ -143,10 +165,11 @@ public class App {
                             break;
                         case 2:
                             System.out.println("\nYou have successfully logged out");
-                            break;
-
+                            break subModule;
                     }
                 } while (answer != 0);
+
+                */
 
             } else {
                 System.out.println("Wrong card number or PIN");
