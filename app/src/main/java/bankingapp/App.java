@@ -16,6 +16,10 @@ public class App {
     static Scanner input = new Scanner(System.in);
     static SQLiteDataSource dataSource = new SQLiteDataSource();
 
+    /**
+     * Main method
+     * @param args
+     */
     public static void main(String[] args) {
         //String url set as program parameter
         dataSource.setUrl(args[0]);
@@ -27,12 +31,11 @@ public class App {
                 //Create DB
                 createDB(statement);
 
-                //Initialize response and Map
+                //Initialize response and create Map object
                 int response = -1;
                 HashMap<String, Integer> account = new HashMap<>();
 
                 do {
-
                     System.out.println("\n1. Create an account\n" +
                             "2. Log into account\n" +
                             "0. Exit");
@@ -40,7 +43,7 @@ public class App {
                     response = input.nextInt();
                     switch (response) {
                         case 1:
-                            createAccount(statement,account);
+                            createAccount(statement, account);
                             break;
                         case 2:
                             logIn(account);
@@ -49,22 +52,30 @@ public class App {
 
                 System.out.println("\nBye!");
 
+                //Close the Statement Object
             } catch (SQLException e) {
                 e.printStackTrace();
             }
 
+            //Close the Connection object
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
 
-    public static void createAccount (Statement statement, HashMap<String, Integer> account) throws SQLException {
+    /**
+     * Method createAccount
+     * @param statement
+     * @param account
+     * @throws SQLException
+     */
+    public static void createAccount(Statement statement, HashMap<String, Integer> account) throws SQLException {
         Random rand = new Random();
         Random rand2 = new Random();
         long upper = 999999999L;
         long lower = 100000000L;
-        String accountNum = "400000" + (rand.nextLong( upper - lower + 1) + lower);
+        String accountNum = "400000" + (rand.nextLong(upper - lower + 1) + lower);
 
         accountNum = checkSum(accountNum);
 
@@ -77,8 +88,12 @@ public class App {
     }
 
 
-    //Luhn's Algorithm to check card validity
-    public static String checkSum(String accountNum){
+    /**
+     * Luhn's Algorithm to check card validity
+     * @param accountNum
+     * @return
+     */
+    public static String checkSum(String accountNum) {
         char numChar;
         int numInteger;
         int sum = 0;
@@ -107,56 +122,72 @@ public class App {
         return accountNum + checkSum;
     }
 
-    public static void logIn (HashMap<String, Integer> account) {
+    /**
+     * Method logIn
+     * @param account
+     */
+    public static void logIn(HashMap<String, Integer> account) {
         int response = -1;
 
-            System.out.println("\nEnter your card number:");
-            String ans = input.next();
-            System.out.println("Enter your PIN:");
-            int resp = input.nextInt();
+        System.out.println("\nEnter your card number:");
+        String ans = input.next();
+        System.out.println("Enter your PIN:");
+        int resp = input.nextInt();
 
-            if (account.containsKey(ans) && account.get(ans).equals(resp)) {
-                System.out.println("\nsuccessfully logged in");
-                int answer = -1;
-                int balance = 0;
+        if (account.containsKey(ans) && account.get(ans).equals(resp)) {
+            System.out.println("\nsuccessfully logged in");
+            int answer = -1;
+            int balance = 0;
 
-               subModule:
-                do {
-                    System.out.println("\n1. Balance\n" +
-                            "2. Log out\n" +
-                            "0. Exit");
+            subModule:
+            do {
+                System.out.println("\n1. Balance\n" +
+                        "2. Log out\n" +
+                        "0. Exit");
 
-                    answer = input.nextInt();
+                answer = input.nextInt();
 
-                    switch (answer) {
-                        case 1:
-                            System.out.println("\nBalance: " + balance);
-                            break;
-                        case 2:
-                            System.out.println("\nYou have successfully logged out");
-                            break subModule;
-                        case 0:
-                            System.exit(0);
-                    }
-                } while (answer != 0);
+                switch (answer) {
+                    case 1:
+                        System.out.println("\nBalance: " + balance);
+                        break;
+                    case 2:
+                        System.out.println("\nYou have successfully logged out");
+                        break subModule;
+                    case 0:
+                        System.exit(0);
+                }
+            } while (answer != 0);
 
 
-            } else {
-                System.out.println("Wrong card number or PIN");
-            }
+        } else {
+            System.out.println("Wrong card number or PIN");
+        }
 
     }
 
-    public static void createDB(Statement statement) throws SQLException{
+    /**
+     * Method createDB
+     * @param statement
+     * @throws SQLException
+     */
+    public static void createDB(Statement statement) throws SQLException {
         statement.executeUpdate("CREATE TABLE IF NOT EXISTS card(" +
-                        "id INTEGER, " +
-                        "num TEXT," +
-                        "pin TEXT," +
-                        "balance INTEGER DEFAULT 0)");
+                "id INTEGER, " +
+                "num TEXT," +
+                "pin TEXT," +
+                "balance INTEGER DEFAULT 0)");
 
     }
 
-    public static void insertDB(Statement statement, String number, String pinNum) throws SQLException{
-        statement.executeUpdate("INSERT INTO card (num,pin)VALUES ('"+number+"', '"+pinNum+"')");
+    /**
+     * Method InsertDB
+     * @param statement
+     * @param number
+     * @param pinNum
+     * @throws SQLException
+     */
+    public static void insertDB(Statement statement, String number, String pinNum) throws SQLException {
+        statement.executeUpdate("INSERT INTO card (num,pin)VALUES ('" + number + "', '" + pinNum + "')");
     }
 }
