@@ -142,7 +142,10 @@ public class App {
             subModule:
             do {
                 System.out.println("\n1. Balance\n" +
-                        "2. Log out\n" +
+                        "2. Add income\n" +
+                        "3. Do transfer\n" +
+                        "4. Close Account\n" +
+                        "5. Log Out\n" +
                         "0. Exit");
 
                 answer = input.nextInt();
@@ -152,6 +155,15 @@ public class App {
                         System.out.println("\nBalance: " + balance);
                         break;
                     case 2:
+
+                        break;
+                    case 3:
+
+                        break;
+                    case 4:
+
+                        break;
+                    case 5:
                         System.out.println("\nYou have successfully logged out");
                         break subModule;
                     case 0:
