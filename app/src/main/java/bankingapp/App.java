@@ -6,6 +6,7 @@ package bankingapp;
 import org.sqlite.SQLiteDataSource;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
@@ -84,7 +85,7 @@ public class App {
                 "\nYour card PIN:\n" + pinNum);
         account.put(accountNum, pinNum);
         insertDB(statement, accountNum, String.valueOf(pinNum));
-        //statement.executeUpdate("INSERT INTO card (number, pin) VALUES ('"+accountNum+"','"+pinNum+"')");
+
     }
 
 
@@ -138,6 +139,7 @@ public class App {
             System.out.println("\nsuccessfully logged in");
             int answer = -1;
             int balance = 0;
+            int income = 0;
 
             subModule:
             do {
@@ -149,12 +151,14 @@ public class App {
                         "0. Exit");
 
                 answer = input.nextInt();
+                income = input.nextInt();
 
                 switch (answer) {
                     case 1:
                         System.out.println("\nBalance: " + balance);
                         break;
                     case 2:
+                        System.out.println("Enter income:");
 
                         break;
                     case 3:
@@ -200,6 +204,15 @@ public class App {
      * @throws SQLException
      */
     public static void insertDB(Statement statement, String number, String pinNum) throws SQLException {
-        statement.executeUpdate("INSERT INTO card (num,pin)VALUES ('" + number + "', '" + pinNum + "')");
+        statement.executeUpdate("INSERT INTO card (num,pin) VALUES ('" + number + "', '" + pinNum + "')");
+    }
+
+    public static void addIncome(Connection con, int income) throws SQLException{
+        String insert = "INSERT into card (balance) VALUES (?)";
+
+        try (PreparedStatement statement = con.prepareStatement(insert)){
+            statement.setInt(1, income);
+            statement.executeUpdate();
+        }
     }
 }
