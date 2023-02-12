@@ -150,26 +150,30 @@ public class App {
 
                 switch (answer) {
                     case 1:
-                        checkBalance(con, cardNumber);
+                        int balance = checkBalance(con, cardNumber);
+                        System.out.println("\nBalance: " + balance);
                         break;
+
                     case 2:
                         System.out.println("Enter income:");
                         income = input.nextInt();
                         addIncome(con, income, cardNumber);
                         System.out.println("Income was added!");
                         break;
+
                     case 3:
-
-
-
+                          transferFunds(con);
                         break;
+
                     case 4:
                         deleteAcc(con, cardNumber);
                         System.out.println("The account has been closed!");
                         break subModule;
+
                     case 5:
                         System.out.println("\nYou have successfully logged out");
                         break subModule;
+
                     case 0:
                         System.exit(0);
                 }
@@ -217,15 +221,15 @@ public class App {
         }
     }
 
-    public static void checkBalance(Connection con, String cardNum) throws SQLException{
+    public static int checkBalance(Connection con, String cardNum) throws SQLException{
         String checkBal = "SELECT balance FROM CARD WHERE num = ?";
 
         try (PreparedStatement statement = con.prepareStatement(checkBal)) {
             statement.setString(1,cardNum);
             statement.executeQuery();
-            System.out.print("\nBalance: ");
-            System.out.println(statement.executeQuery().getString(1));
+            return statement.executeQuery().getInt(1);
         }
+
     }
 
     public static boolean checkAcc(Connection con, String cardNumber, int pin) throws SQLException{
@@ -241,6 +245,18 @@ public class App {
         return isAccountAvailable;
     }
 
+    public static boolean checkAcc_withoutPin(Connection con, String cardNumber) throws SQLException{
+        boolean isAccountAvailable = false;
+        String queryDB = "SELECT * FROM card WHERE num = ?";
+
+        try (PreparedStatement statement = con.prepareStatement(queryDB)){
+            statement.setString(1, cardNumber);
+            ResultSet ans = statement.executeQuery();
+            isAccountAvailable = ans.isBeforeFirst();
+        }
+        return isAccountAvailable;
+    }
+
     public static void deleteAcc(Connection con, String cardNumber) throws SQLException{
         String queryDB = "DELETE FROM card WHERE num = ?";
 
@@ -250,5 +266,28 @@ public class App {
         }
     }
 
-    
+    public static void transferFunds(Connection con) throws SQLException{
+
+        System.out.println("Transfer");
+        System.out.println("Enter card number:");
+        String cardNumber = input.next();
+
+        //int accNum = Integer.parseInt(checkSum(cardNumber));
+
+        if (Integer.parseInt(checkSum(cardNumber)) % 10 != 0) {
+            System.out.println("Probably you made a mistake in the card number. Please try again");
+        } else if(!checkAcc_withoutPin(con, cardNumber)) {
+            System.out.println("Such a card does not exist");
+        }else {
+            System.out.println("Enter how much money you want to transfer:");
+            int funds = input.nextInt();
+
+            if(funds > checkBalance(con, cardNumber)) {
+                System.out.println("Not enough money!");
+            }else {
+                addIncome(con, funds, cardNumber);
+                System.out.println("Success!");
+            }
+        }
+    }
 }
