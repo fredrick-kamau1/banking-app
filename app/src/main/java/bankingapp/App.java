@@ -5,10 +5,7 @@ package bankingapp;
 
 import org.sqlite.SQLiteDataSource;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Scanner;
@@ -47,7 +44,7 @@ public class App {
                             createAccount(statement, account);
                             break;
                         case 2:
-                            logIn(account);
+                            logIn(con, account);
                     }
                 } while (response != 0);
 
@@ -127,18 +124,17 @@ public class App {
      * Method logIn
      * @param account
      */
-    public static void logIn(HashMap<String, Integer> account) {
+    public static void logIn(Connection con, HashMap<String, Integer> account) throws SQLException{
         int response = -1;
 
         System.out.println("\nEnter your card number:");
-        String ans = input.next();
+        String cardNumber = input.next();
         System.out.println("Enter your PIN:");
-        int resp = input.nextInt();
+        int cardPin = input.nextInt();
 
-        if (account.containsKey(ans) && account.get(ans).equals(resp)) {
-            System.out.println("\nsuccessfully logged in");
+        if (checkAcc(con, cardNumber, cardPin)  /* --(using HashMap)  account.containsKey(cardNumber) && account.get(cardNumber).equals(cardPin)*/) {
+            System.out.println("\nYou have successfully logged in!");
             int answer = -1;
-            int balance = 0;
             int income = 0;
 
             subModule:
@@ -151,22 +147,26 @@ public class App {
                         "0. Exit");
 
                 answer = input.nextInt();
-                income = input.nextInt();
 
                 switch (answer) {
                     case 1:
-                        System.out.println("\nBalance: " + balance);
+                        checkBalance(con, cardNumber);
                         break;
                     case 2:
                         System.out.println("Enter income:");
-
+                        income = input.nextInt();
+                        addIncome(con, income, cardNumber);
+                        System.out.println("Income was added!");
                         break;
                     case 3:
 
-                        break;
-                    case 4:
+
 
                         break;
+                    case 4:
+                        deleteAcc(con, cardNumber);
+                        System.out.println("The account has been closed!");
+                        break subModule;
                     case 5:
                         System.out.println("\nYou have successfully logged out");
                         break subModule;
@@ -207,12 +207,48 @@ public class App {
         statement.executeUpdate("INSERT INTO card (num,pin) VALUES ('" + number + "', '" + pinNum + "')");
     }
 
-    public static void addIncome(Connection con, int income) throws SQLException{
-        String insert = "INSERT into card (balance) VALUES (?)";
+    public static void addIncome(Connection con, int income, String cardNum) throws SQLException{
+        String insert = "UPDATE card SET balance = balance + ? WHERE num = ?";
 
         try (PreparedStatement statement = con.prepareStatement(insert)){
             statement.setInt(1, income);
+            statement.setString(2, cardNum);
             statement.executeUpdate();
         }
     }
+
+    public static void checkBalance(Connection con, String cardNum) throws SQLException{
+        String checkBal = "SELECT balance FROM CARD WHERE num = ?";
+
+        try (PreparedStatement statement = con.prepareStatement(checkBal)) {
+            statement.setString(1,cardNum);
+            statement.executeQuery();
+            System.out.print("\nBalance: ");
+            System.out.println(statement.executeQuery().getString(1));
+        }
+    }
+
+    public static boolean checkAcc(Connection con, String cardNumber, int pin) throws SQLException{
+        boolean isAccountAvailable = false;
+        String queryDB = "SELECT * FROM card WHERE num = ? AND pin = ?";
+
+        try (PreparedStatement statement = con.prepareStatement(queryDB)){
+            statement.setString(1, cardNumber);
+            statement.setInt(2, pin);
+            ResultSet ans = statement.executeQuery();
+            isAccountAvailable = ans.isBeforeFirst();
+        }
+        return isAccountAvailable;
+    }
+
+    public static void deleteAcc(Connection con, String cardNumber) throws SQLException{
+        String queryDB = "DELETE FROM card WHERE num = ?";
+
+        try (PreparedStatement statement = con.prepareStatement(queryDB)){
+            statement.setString(1, cardNumber);
+            statement.executeUpdate();
+        }
+    }
+
+    
 }
