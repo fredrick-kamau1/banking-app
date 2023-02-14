@@ -274,11 +274,13 @@ public class App {
 
         //int accNum = Integer.parseInt(checkSum(cardNumber));
 
-        if (Integer.parseInt(checkSum(cardNumber)) % 10 != 0) {
+        if (false /*Integer.parseInt(cardNumber) % 10 != 0*/) {
             System.out.println("Probably you made a mistake in the card number. Please try again");
         } else if(!checkAcc_withoutPin(con, cardNumber)) {
             System.out.println("Such a card does not exist");
-        }else {
+        } else if (cardNumber.equals(checkAcc_withoutPin(con,cardNumber))) {
+            System.out.println("You can't transfer money to the same account");
+        } else {
             System.out.println("Enter how much money you want to transfer:");
             int funds = input.nextInt();
 
