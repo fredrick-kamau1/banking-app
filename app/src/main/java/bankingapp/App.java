@@ -75,7 +75,7 @@ public class App {
         long lower = 100000000L;
         String accountNum = "400000" + (rand.nextLong(upper - lower + 1) + lower);
 
-        accountNum = checkSum(accountNum);
+        accountNum = checkSumNum(accountNum);
 
         int pinNum = rand2.nextInt(9999 - 1000 + 1) + 1000;
         System.out.println("\nYour card has been created\nYour card number:\n" + accountNum +
@@ -91,7 +91,7 @@ public class App {
      * @param accountNum
      * @return
      */
-    public static String checkSum(String accountNum) {
+    public static String checkSumNum(String accountNum) {
         char numChar;
         int numInteger;
         int sum = 0;
@@ -118,6 +118,27 @@ public class App {
             }
         }
         return accountNum + checkSum;
+    }
+
+    public static boolean luhnsAlgorithmCheck(String accountNum){
+        char numChar;
+        int numInteger;
+        int sum = 0;
+        for (int i = 0; i < accountNum.length(); i++) {
+            numChar = accountNum.charAt(i);
+            numInteger = Integer.parseInt(String.valueOf(numChar));
+
+            if (i % 2 == 0) {
+                numInteger *= 2;
+            }
+
+            if (numInteger > 9) {
+                numInteger -= 9;
+            }
+
+            sum += numInteger;
+        }
+        return (sum % 10 == 0);
     }
 
     /**
@@ -162,7 +183,7 @@ public class App {
                         break;
 
                     case 3:
-                          transferFunds(con);
+                          transferFunds(con, cardNumber);
                         break;
 
                     case 4:
@@ -221,6 +242,16 @@ public class App {
         }
     }
 
+    public static void deductBalance(Connection con, int deduct, String cardNum) throws SQLException{
+        String insert = "UPDATE card SET balance = balance - ? WHERE num = ?";
+
+        try (PreparedStatement statement = con.prepareStatement(insert)) {
+            statement.setInt(1, deduct);
+            statement.setString(2, cardNum);
+            statement.executeUpdate();
+        }
+    }
+
     public static int checkBalance(Connection con, String cardNum) throws SQLException{
         String checkBal = "SELECT balance FROM CARD WHERE num = ?";
 
@@ -266,7 +297,7 @@ public class App {
         }
     }
 
-    public static void transferFunds(Connection con) throws SQLException{
+    public static void transferFunds(Connection con, String cardNum) throws SQLException {
 
         System.out.println("Transfer");
         System.out.println("Enter card number:");
@@ -274,22 +305,27 @@ public class App {
 
         //int accNum = Integer.parseInt(checkSum(cardNumber));
 
-        if (false /*Integer.parseInt(cardNumber) % 10 != 0*/) {
-            System.out.println("Probably you made a mistake in the card number. Please try again");
-        } else if(!checkAcc_withoutPin(con, cardNumber)) {
-            System.out.println("Such a card does not exist");
-        } else if (cardNumber.equals(checkAcc_withoutPin(con,cardNumber))) {
-            System.out.println("You can't transfer money to the same account");
-        } else {
-            System.out.println("Enter how much money you want to transfer:");
-            int funds = input.nextInt();
+        if (luhnsAlgorithmCheck(cardNumber)) {
+            if (!checkAcc_withoutPin(con, cardNumber)) {
+                System.out.println("Such a card does not exist");
+            } else if (cardNumber.equals(cardNum)) {
+                System.out.println("You can't transfer money to the same account!");
+            } else {
+                System.out.println("Enter how much money you want to transfer:");
+                int funds = input.nextInt();
 
-            if(funds > checkBalance(con, cardNumber)) {
-                System.out.println("Not enough money!");
-            }else {
-                addIncome(con, funds, cardNumber);
-                System.out.println("Success!");
+                if (funds > checkBalance(con, cardNum)) {
+                    System.out.println("Not enough money!");
+                } else {
+                    addIncome(con, funds, cardNumber);
+                    deductBalance(con,funds,cardNum);
+                    System.out.println("Success!");
+                }
             }
+        } else {
+            System.out.println("Probably you made a mistake in the card number. Please try again");
+
         }
     }
+
 }
