@@ -7,7 +7,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 /**
- * @author Fredrick Class CreateAccount that creates a new bank account for the user. The user is required to provide
+ * @author Fredrick Class CreateAccount that creates a new bank account for a user. The user is required to provide
  * their first and last name, the system will in turn generate a random account number and PIN-number.
  */
 public class CreateAccount {
@@ -24,44 +24,26 @@ public class CreateAccount {
         input = new Scanner(System.in);
         setFirstName();
         setLastName();
-        this.firstName = getFirstName();
-        this.lastName = getLastName();
-        this.toString();
+        setAccountNumber();
+        setPinNumber();
     }
 
-
-    /**
-     *
-     * @param statement
-     * @param account
-     * @throws SQLException
-     */
-    public static void createAccount(Statement statement, HashMap<String, Integer> account) throws SQLException {
-        Random rand = new Random();
-        Random rand2 = new Random();
-        long upper = 999999999L;
-        long lower = 100000000L;
-        String accountNum = "400000" + (rand.nextLong(upper - lower + 1) + lower);
-
-        //accountNum = checkSumNum(accountNum);
-
-        int pinNum = rand2.nextInt(9999 - 1000 + 1) + 1000;
-        System.out.println("\nYour card has been created\nYour card number:\n" + accountNum +
-                "\nYour card PIN:\n" + pinNum);
-        account.put(accountNum, pinNum);
-
-
-
-        //insertDB(statement, accountNum, String.valueOf(pinNum));
-
+    CreateAccount(Statement statement) throws SQLException{
+        this();
+        App.insertDB(statement, getAccountNumber(), String.valueOf(getPinNumber()));
     }
+
 
     /**
      * Setter method to set fistName
      */
     public void setFirstName(){
-        System.out.println("Enter First Name:");
-        this.firstName = input.nextLine();
+        String firstName;
+        do{
+            System.out.println("Enter First Name:");
+            firstName = input.nextLine();
+        }while (firstName.equals(null) || firstName.trim().isEmpty());
+        this.firstName = firstName.trim();
     }
 
     /**
@@ -72,13 +54,19 @@ public class CreateAccount {
         return this.firstName;
     }
 
+
     /**
      * Setter method to set fistName
      */
     public void setLastName(){
-        System.out.println("Enter Last Name:");
-        this.lastName = input.nextLine();
+        String lastName;
+        do {
+            System.out.println("Enter Last Name:");
+            lastName = input.nextLine();
+        }while (lastName.equals(null) || lastName.trim().isEmpty());
+        this.lastName = lastName.trim();
     }
+
 
     /**
      * Getter method to get the last name
@@ -89,45 +77,62 @@ public class CreateAccount {
     }
 
     /**
-     * Getter method to get the Account Number
-     * @return accountNumber
+     * Setter method to set the Account Number
      */
-    public String getAccountNumber() {
+    public void setAccountNumber() {
         Random rand = new Random();
-        long upperValue = 999999999L;
-        long lowerValue = 100000000L;
+        long upperValue = 9999999999L;
+        long lowerValue = 1000000000L;
         String accountNumber = "";
-        String checkedNumber = "";
 
         while(true) {
             accountNumber = "400000" + (rand.nextLong(upperValue - lowerValue + 1) + lowerValue);
             //Check if the random number passes the luhn's algorithm
             if (luhnsAlgorithmCheck(accountNumber)) {
-                checkedNumber = accountNumber;
+                this.accountNumber = accountNumber;
                 break;
             }
         }
-        return checkedNumber;
+    }
 
+    /**
+     * Getter method to get the Account Number
+     * @return accountNumber
+     */
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+    /**
+     * setter method to set the PIN-number
+     */
+    public void setPinNumber() {
+        Random rand = new Random();
+        int upperValue = 9999;
+        int lowerValue = 1000;
+        this.pin = rand.nextInt(upperValue - lowerValue + 1) + lowerValue;
     }
 
     /**
      * Getter method to get the PIN-number
-     * @return
+     * @return pin
      */
     public int getPinNumber() {
-        Random rand = new Random();
-        int upperValue = 9999;
-        int lowerValue = 1000;
-        return rand.nextInt(upperValue - lowerValue + 1) + lowerValue;
+        return pin;
     }
 
-    public boolean luhnsAlgorithmCheck(String accountNum){
+    /**
+     * luhnsAlgorithmCheck method checks the randomly generated accountNumber to ensure it complies with the
+     * luhn's algorithm
+     * @param accountNumber
+     * @return
+     */
+    public static boolean luhnsAlgorithmCheck(String accountNumber){
         char numChar;
         int numInteger;
         int sum = 0;
-        for (int i = 0; i < accountNum.length(); i++) {
-            numChar = accountNum.charAt(i);
+        for (int i = 0; i < accountNumber.length(); i++) {
+            numChar = accountNumber.charAt(i);
             numInteger = Integer.parseInt(String.valueOf(numChar));
 
             if (i % 2 == 0) {
@@ -142,7 +147,7 @@ public class CreateAccount {
         }
         return (sum % 10 == 0);
     }
-    
+
     public String toString(){
         return "Thank you "+ getFirstName() + " " + getLastName() +"\nYour account has been created" +
                 "\nYour card number is:\n" + getAccountNumber() +
