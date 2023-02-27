@@ -41,10 +41,12 @@ public class App {
                     response = input.nextInt();
                     switch (response) {
                         case 1:
-                            createAccount(statement, account);
+                            //createAccount(statement, account);
+                            System.out.println(new CreateAccount(statement));
                             break;
                         case 2:
-                            logIn(con, account);
+                            //logIn(con, account);
+                            System.out.println(new LogIn(con));
                     }
                 } while (response != 0);
 
@@ -214,6 +216,8 @@ public class App {
      */
     public static void createDB(Statement statement) throws SQLException {
         statement.executeUpdate("CREATE TABLE IF NOT EXISTS card(" +
+                "first_name TEXT" +
+                "last_name TEXT" +
                 "id INTEGER, " +
                 "num TEXT," +
                 "pin TEXT," +
