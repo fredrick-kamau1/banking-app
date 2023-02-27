@@ -16,6 +16,7 @@ public class App {
 
     /**
      * Main method
+     *
      * @param args
      */
     public static void main(String[] args) {
@@ -27,11 +28,12 @@ public class App {
             try (Statement statement = con.createStatement()) {
 
                 //Create DB
-                createDB(statement);
+                DBTrans db = new DBTrans();
+                db.createDB(statement);
 
                 //Initialize response and create Map object
                 int response = -1;
-                HashMap<String, Integer> account = new HashMap<>();
+                //HashMap<String, Integer> account = new HashMap<>();
 
                 do {
                     System.out.println("\n1. Create an account\n" +
@@ -62,14 +64,17 @@ public class App {
             e.printStackTrace();
         }
     }
+}
+/*
 
-
-    /**
+    */
+/**
      * Method createAccount
      * @param statement
      * @param account
      * @throws SQLException
-     */
+     *//*
+
     public static void createAccount(Statement statement, HashMap<String, Integer> account) throws SQLException {
         Random rand = new Random();
         Random rand2 = new Random();
@@ -86,13 +91,17 @@ public class App {
         insertDB(statement, accountNum, String.valueOf(pinNum));
 
     }
+*/
 
+/*
 
-    /**
+    */
+/**
      * Luhn's Algorithm to check card validity
      * @param accountNum
      * @return
-     */
+     *//*
+
     public static String checkSumNum(String accountNum) {
         char numChar;
         int numInteger;
@@ -121,7 +130,8 @@ public class App {
         }
         return accountNum + checkSum;
     }
-
+*/
+/*
     public static boolean luhnsAlgorithmCheck(String accountNum){
         char numChar;
         int numInteger;
@@ -143,10 +153,10 @@ public class App {
         return (sum % 10 == 0);
     }
 
-    /**
+    *//**
      * Method logIn
      * @param account
-     */
+     *//*
     public static void logIn(Connection con, HashMap<String, Integer> account) throws SQLException{
         int response = -1;
 
@@ -155,7 +165,7 @@ public class App {
         System.out.println("Enter your PIN:");
         int cardPin = input.nextInt();
 
-        if (checkAcc(con, cardNumber, cardPin)  /* --(using HashMap)  account.containsKey(cardNumber) && account.get(cardNumber).equals(cardPin)*/) {
+        if (checkAcc(con, cardNumber, cardPin)  *//* --(using HashMap)  account.containsKey(cardNumber) && account.get(cardNumber).equals(cardPin)*//*) {
             System.out.println("\nYou have successfully logged in!");
             int answer = -1;
             int income = 0;
@@ -209,11 +219,11 @@ public class App {
 
     }
 
-    /**
+    *//**
      * Method createDB
      * @param statement
      * @throws SQLException
-     */
+     *//*
     public static void createDB(Statement statement) throws SQLException {
         statement.executeUpdate("CREATE TABLE IF NOT EXISTS card(" +
                 "first_name TEXT" +
@@ -225,13 +235,13 @@ public class App {
 
     }
 
-    /**
+    *//**
      * Method InsertDB
      * @param statement
      * @param number
      * @param pinNum
      * @throws SQLException
-     */
+     *//*
     public static void insertDB(Statement statement, String number, String pinNum) throws SQLException {
         statement.executeUpdate("INSERT INTO card (num,pin) VALUES ('" + number + "', '" + pinNum + "')");
     }
@@ -332,4 +342,4 @@ public class App {
         }
     }
 
-}
+}*/

@@ -30,7 +30,7 @@ public class CreateAccount {
 
     CreateAccount(Statement statement) throws SQLException{
         this();
-        App.insertDB(statement, getAccountNumber(), String.valueOf(getPinNumber()));
+        DBTrans.insertDB(statement, getAccountNumber(), String.valueOf(getPinNumber()));
     }
 
 
