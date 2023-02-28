@@ -7,15 +7,15 @@ import java.util.Random;
 import java.util.Scanner;
 
 /**
- * @author Fredrick Class CreateAccount that creates a new bank account for a user. The user is required to provide
+ * @author Fredrick. Class CreateAccount that creates a new bank account for a user. The user is required to provide
  * their first and last name, the system will in turn generate a random account number and PIN-number.
  */
 public class CreateAccount {
 
-    String firstName;
-    String lastName;
-    String accountNumber;
-    int pin;
+    private String firstName;
+    private String lastName;
+    private String accountNumber;
+    private int pin;
     HashMap<String, Integer> account;
     Statement statement;
     Scanner input;
@@ -56,7 +56,7 @@ public class CreateAccount {
 
 
     /**
-     * Setter method to set fistName
+     * Setter method to set first name
      */
     public void setLastName(){
         String lastName;
