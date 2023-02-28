@@ -43,11 +43,9 @@ public class App {
                     response = input.nextInt();
                     switch (response) {
                         case 1:
-                            //createAccount(statement, account);
                             System.out.println(new CreateAccount(statement));
                             break;
                         case 2:
-                            //logIn(con, account);
                             System.out.println(new LogIn(con));
                     }
                 } while (response != 0);
