@@ -47,6 +47,13 @@ public class DBTrans {
         statement.executeUpdate("INSERT INTO card (num,pin) VALUES ('" + number + "', '" + pinNum + "')");
     }
 
+    /**
+     *
+     * @param con
+     * @param income
+     * @param cardNum
+     * @throws SQLException
+     */
     public static void addIncome(Connection con, int income, String cardNum) throws SQLException{
         String insert = "UPDATE card SET balance = balance + ? WHERE num = ?";
 
@@ -57,6 +64,13 @@ public class DBTrans {
         }
     }
 
+    /**
+     *
+     * @param con
+     * @param deduct
+     * @param cardNum
+     * @throws SQLException
+     */
     public static void deductBalance(Connection con, int deduct, String cardNum) throws SQLException{
         String insert = "UPDATE card SET balance = balance - ? WHERE num = ?";
 
@@ -67,6 +81,13 @@ public class DBTrans {
         }
     }
 
+    /**
+     *
+     * @param con
+     * @param cardNum
+     * @return
+     * @throws SQLException
+     */
     public static int checkBalance(Connection con, String cardNum) throws SQLException{
         String checkBal = "SELECT balance FROM CARD WHERE num = ?";
 
@@ -78,6 +99,14 @@ public class DBTrans {
 
     }
 
+    /**
+     *
+     * @param con
+     * @param cardNumber
+     * @param pin
+     * @return
+     * @throws SQLException
+     */
     public static boolean checkAcc(Connection con, String cardNumber, int pin) throws SQLException{
         boolean isAccountAvailable = false;
         String queryDB = "SELECT * FROM card WHERE num = ? AND pin = ?";
@@ -91,6 +120,13 @@ public class DBTrans {
         return isAccountAvailable;
     }
 
+    /**
+     *
+     * @param con
+     * @param cardNumber
+     * @return
+     * @throws SQLException
+     */
     public static boolean checkAcc_withoutPin(Connection con, String cardNumber) throws SQLException{
         boolean isAccountAvailable = false;
         String queryDB = "SELECT * FROM card WHERE num = ?";
@@ -103,6 +139,12 @@ public class DBTrans {
         return isAccountAvailable;
     }
 
+    /**
+     *
+     * @param con
+     * @param cardNumber
+     * @throws SQLException
+     */
     public static void deleteAcc(Connection con, String cardNumber) throws SQLException{
         String queryDB = "DELETE FROM card WHERE num = ?";
 
@@ -112,6 +154,12 @@ public class DBTrans {
         }
     }
 
+    /**
+     * 
+     * @param con
+     * @param cardNum
+     * @throws SQLException
+     */
     public static void transferFunds(Connection con, String cardNum) throws SQLException {
 
         System.out.println("Transfer");
