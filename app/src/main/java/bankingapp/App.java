@@ -8,8 +8,6 @@ import java.sql.*;
 import java.util.Scanner;
 
 public class App {
-    static Scanner input = new Scanner(System.in);
-    static SQLiteDataSource dataSource = new SQLiteDataSource();
 
     /**
      * Main method
@@ -17,6 +15,8 @@ public class App {
      * @param args
      */
     public static void main(String[] args) {
+        SQLiteDataSource dataSource = new SQLiteDataSource();
+
         //String url set as program parameter
         dataSource.setUrl(args[0]);
 
@@ -28,8 +28,8 @@ public class App {
                 DBTrans db = new DBTrans();
                 db.createDB(statement);
 
-                //Initialize response and create Map object
-                int response = -1;                
+                int response = -1;
+                Scanner input = new Scanner(System.in);
 
                 do {
                     System.out.println("\n1. Create an account\n" +
