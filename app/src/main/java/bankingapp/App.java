@@ -6,8 +6,6 @@ package bankingapp;
 import org.sqlite.SQLiteDataSource;
 
 import java.sql.*;
-import java.util.HashMap;
-import java.util.Random;
 import java.util.Scanner;
 
 public class App {
@@ -43,7 +41,7 @@ public class App {
                     response = input.nextInt();
                     switch (response) {
                         case 1:
-                            System.out.println(new CreateAccount(statement));
+                            System.out.println(new CreateAccount(con));
                             break;
                         case 2:
                             System.out.println(new LogIn(con));

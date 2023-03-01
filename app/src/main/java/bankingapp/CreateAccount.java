@@ -1,8 +1,7 @@
 package bankingapp;
 
+import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.HashMap;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -16,23 +15,20 @@ public class CreateAccount {
     private String lastName;
     private String accountNumber;
     private int pin;
-    HashMap<String, Integer> account;
-    Statement statement;
-    Scanner input;
+    Scanner scanner;
 
     CreateAccount(){
-        input = new Scanner(System.in);
+        scanner = new Scanner(System.in);
         setFirstName();
         setLastName();
         setAccountNumber();
         setPinNumber();
     }
 
-    CreateAccount(Statement statement) throws SQLException{
+    CreateAccount(Connection connection) throws SQLException{
         this();
-        DBTrans.insertDB(statement, getAccountNumber(), String.valueOf(getPinNumber()));
+        DBTrans.insertDB(connection, getFirstName(), getLastName(), getAccountNumber(), String.valueOf(getPinNumber()));
     }
-
 
     /**
      * Setter method to set fistName
@@ -41,7 +37,7 @@ public class CreateAccount {
         String firstName;
         do{
             System.out.println("Enter First Name:");
-            firstName = input.nextLine();
+            firstName = scanner.nextLine();
         }while (firstName.equals(null) || firstName.trim().isEmpty());
         this.firstName = firstName.trim();
     }
@@ -62,7 +58,7 @@ public class CreateAccount {
         String lastName;
         do {
             System.out.println("Enter Last Name:");
-            lastName = input.nextLine();
+            lastName = scanner.nextLine();
         }while (lastName.equals(null) || lastName.trim().isEmpty());
         this.lastName = lastName.trim();
     }
@@ -148,6 +144,10 @@ public class CreateAccount {
         return (sum % 10 == 0);
     }
 
+    /**
+     * Method toString prints out the first and last name as well as the newly created accountNumber and PIN
+     * @return String
+     */
     public String toString(){
         return "Thank you "+ getFirstName() + " " + getLastName() +"\nYour account has been created" +
                 "\nYour card number is:\n" + getAccountNumber() +
