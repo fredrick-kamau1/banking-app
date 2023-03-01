@@ -4,7 +4,6 @@
 package bankingapp;
 
 import org.sqlite.SQLiteDataSource;
-
 import java.sql.*;
 import java.util.Scanner;
 
@@ -22,7 +21,7 @@ public class App {
         dataSource.setUrl(args[0]);
 
         //Connect to the database
-        try (Connection con = dataSource.getConnection()) {
+        try (Connection connection = dataSource.getConnection()) {
             try (Statement statement = con.createStatement()) {
 
                 //Create DB
@@ -30,8 +29,7 @@ public class App {
                 db.createDB(statement);
 
                 //Initialize response and create Map object
-                int response = -1;
-                //HashMap<String, Integer> account = new HashMap<>();
+                int response = -1;                
 
                 do {
                     System.out.println("\n1. Create an account\n" +
@@ -41,10 +39,10 @@ public class App {
                     response = input.nextInt();
                     switch (response) {
                         case 1:
-                            System.out.println(new CreateAccount(con));
+                            System.out.println(new CreateAccount(connection));
                             break;
                         case 2:
-                            System.out.println(new LogIn(con));
+                            System.out.println(new LogIn(connection));
                     }
                 } while (response != 0);
 
