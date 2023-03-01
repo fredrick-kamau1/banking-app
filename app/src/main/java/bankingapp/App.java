@@ -22,7 +22,7 @@ public class App {
 
         //Connect to the database
         try (Connection connection = dataSource.getConnection()) {
-            try (Statement statement = con.createStatement()) {
+            try (Statement statement = connection.createStatement()) {
 
                 //Create DB
                 DBTrans db = new DBTrans();
