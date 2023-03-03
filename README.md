@@ -9,7 +9,7 @@
 * Exit program
 ### Technologies
 * Java 17
-* SQLite 3.36.0
+* SQLite 3.40.0
 ### Usage
 To use this application, follow these steps:
 
