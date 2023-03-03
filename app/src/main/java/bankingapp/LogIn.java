@@ -13,7 +13,6 @@ public class LogIn {
 
     private String accountNumber;
     private String pinNumber;
-    private Connection connection;
     private Scanner scanner;
 
     public LogIn() {
@@ -22,9 +21,9 @@ public class LogIn {
         setPinNumber();
     }
 
-    public LogIn(Connection con) throws SQLException{
+    public LogIn(Connection connection) throws SQLException{
         this();
-        checkAccount(con, getAccountNumber(), getPinNum());
+        checkAccount(connection, getAccountNumber(), getPinNum());
     }
 
     /**
@@ -83,7 +82,7 @@ public class LogIn {
         int answer = -1;
         int income = 0;
 
-        subModule:
+        subMenu:
         do {
             System.out.println("\n1. Balance\n" +
                     "2. Add income\n" +
@@ -114,11 +113,11 @@ public class LogIn {
                 case 4:
                     DBTrans.deleteAcc(con, accountNumber);
                     System.out.println("The account has been closed!");
-                    break subModule;
+                    break subMenu;
 
                 case 5:
                     System.out.println("\nYou have successfully logged out");
-                    break subModule;
+                    break subMenu;
 
                 case 0:
                     System.exit(0);
@@ -127,9 +126,9 @@ public class LogIn {
 
 
     } else {
-        System.out.println("Wrong card number or PIN");
+        System.out.println("Wrong account number or PIN");
     }
-        scanner.close();
+
     }
 
 }

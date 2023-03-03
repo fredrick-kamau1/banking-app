@@ -150,7 +150,7 @@ public class CreateAccount {
      */
     public String toString(){
         return "Thank you "+ getFirstName() + " " + getLastName() +"\nYour account has been created" +
-                "\nYour card number is:\n" + getAccountNumber() +
-                "\nYour card PIN:\n" + getPinNumber();
+                "\nYour account number is:\n" + getAccountNumber() +
+                "\nYour account PIN:\n" + getPinNumber();
     }
 }
