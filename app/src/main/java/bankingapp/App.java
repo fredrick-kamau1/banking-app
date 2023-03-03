@@ -5,6 +5,7 @@ package bankingapp;
 
 import org.sqlite.SQLiteDataSource;
 import java.sql.*;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class App {
@@ -15,6 +16,8 @@ public class App {
      * @param args
      */
     public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+
         SQLiteDataSource dataSource = new SQLiteDataSource();
 
         //String url set as program parameter
@@ -29,20 +32,25 @@ public class App {
                 db.createDB(statement);
 
                 int response = -1;
-                Scanner input = new Scanner(System.in);
 
                 do {
                     System.out.println("\n1. Create an account\n" +
                             "2. Log into account\n" +
                             "0. Exit");
 
-                    response = input.nextInt();
-                    switch (response) {
-                        case 1:
-                            System.out.println(new CreateAccount(connection));
-                            break;
-                        case 2:
-                            System.out.println(new LogIn(connection));
+                    try {
+                        response = input.nextInt();
+                        switch (response) {
+                            case 1:
+                                System.out.println(new CreateAccount(connection));
+                                break;
+                            case 2:
+                                new LogIn(connection);
+                                break;
+                        }
+                    }catch (InputMismatchException e){
+                        System.out.println("Invalid input");
+                        //input.nextLine();
                     }
                 } while (response != 0);
 
