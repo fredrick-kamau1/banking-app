@@ -80,12 +80,12 @@ public class DBTrans implements IDBTrans {
      * Method deductBalance deducts amount of money from the balance field in the card table for a specific account
      * identified by accountNum. It takes a Connection object, a deduct amount and an accountNum as input, and throws an
      * SQLException if there is an error executing the SQL command.
-     * @param connection
+     *
      * @param deduct
      * @param accountNum
      * @throws SQLException
      */
-    private void deductBalance(Connection connection, int deduct, String accountNum) throws SQLException{
+    private void deductBalance(int deduct, String accountNum) throws SQLException{
         String insert = "UPDATE account SET balance = balance - ? WHERE accountNum = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(insert)) {
@@ -210,7 +210,7 @@ public class DBTrans implements IDBTrans {
                 } else {
                     // Add the transferred funds to the recipient's account and deduct them from the user's account
                     addIncome(connection, funds, cardNumber);
-                    deductBalance(connection,funds,accountNum);
+                    deductBalance(funds,accountNum);
                     System.out.println("Success!");
                 }
             }
