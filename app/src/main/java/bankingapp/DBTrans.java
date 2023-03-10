@@ -46,8 +46,9 @@ public class DBTrans implements IDBTrans {
      * @param pinNum
      * @throws SQLException
      */
+    @Override
     public void insertDB(Connection con, String first_name, String last_name, String accountNumber,
-                                String pinNum) throws SQLException {
+                         String pinNum) throws SQLException {
         String insert = "INSERT INTO account (first_name, last_name, accountNum, pin) VALUES (?,?,?,?)";
 
         try (PreparedStatement statement = con.prepareStatement(insert)) {
@@ -68,6 +69,7 @@ public class DBTrans implements IDBTrans {
      * @param accountNum
      * @throws SQLException
      */
+    @Override
     public void addIncome(Connection con, int income, String accountNum) throws SQLException{
         String insert = "UPDATE account SET balance = balance + ? WHERE accountNum = ?";
 
@@ -106,6 +108,7 @@ public class DBTrans implements IDBTrans {
      * @return
      * @throws SQLException
      */
+    @Override
     public int checkBalance(Connection connection, String accountNum) throws SQLException{
         String checkBal = "SELECT balance FROM account WHERE accountNum = ?";
 
@@ -127,6 +130,7 @@ public class DBTrans implements IDBTrans {
      * @return isAccountAvailable
      * @throws SQLException
      */
+    @Override
     public boolean checkAcc(Connection connection, String accountNum, int pin) throws SQLException{
         boolean isAccountAvailable = false;
         String queryDB = "SELECT * FROM account WHERE accountNum = ? AND pin = ?";
@@ -168,6 +172,7 @@ public class DBTrans implements IDBTrans {
      * @param accountNum
      * @throws SQLException
      */
+    @Override
     public void deleteAcc(Connection connection, String accountNum) throws SQLException{
         String queryDB = "DELETE FROM account WHERE accountNum = ?";
 
@@ -183,6 +188,7 @@ public class DBTrans implements IDBTrans {
      * @param accountNum
      * @throws SQLException
      */
+    @Override
     public void transferFunds(Connection connection, String accountNum) throws SQLException {
 
         // Prompt the user for the card number of the account they want to transfer funds to
