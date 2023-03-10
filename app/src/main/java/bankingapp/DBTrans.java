@@ -87,7 +87,7 @@ public class DBTrans implements IDBTrans {
      * @param accountNum
      * @throws SQLException
      */
-    public void deductBalance(Connection connection, int deduct, String accountNum) throws SQLException{
+    private void deductBalance(Connection connection, int deduct, String accountNum) throws SQLException{
         String insert = "UPDATE account SET balance = balance - ? WHERE accountNum = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(insert)) {
@@ -149,7 +149,7 @@ public class DBTrans implements IDBTrans {
      * @return isAccountAvailable
      * @throws SQLException
      */
-    public boolean checkAcc_withoutPin(Connection connection, String accountNum) throws SQLException{
+    private boolean checkAcc_withoutPin(Connection connection, String accountNum) throws SQLException{
         boolean isAccountAvailable = false;
         String queryDB = "SELECT * FROM account WHERE accountNum = ?";
 
