@@ -25,46 +25,36 @@ public class App {
         //String url set as program parameter
         dataSource.setUrl(args[0]);
 
-        //Connect to the database
-        try (Connection connection = dataSource.getConnection()) {
-            try (Statement ignored = connection.createStatement()) {
+        //Set up DB connection layer
+        try (IDBTrans dbTrans = new DBTrans((dataSource))) {
+            //Create DB
+            dbTrans.createDB();
 
-                //Create DB
-                App.dbTrans = new DBTrans(dataSource);
-                App.dbTrans.createDB();
+            int response = -1;
 
-                int response = -1;
+            do {
+                System.out.println("\n1. Create an account\n" +
+                        "2. Log into account\n" +
+                        "0. Exit");
 
-                do {
-                    System.out.println("\n1. Create an account\n" +
-                            "2. Log into account\n" +
-                            "0. Exit");
-
-                    try {
-                        response = input.nextInt();
-                        switch (response) {
-                            case 1:
-                                System.out.println(new CreateAccount(connection, dbTrans));
-                                break;
-                            case 2:
-                                new LogIn(connection, dbTrans);
-                                break;
-                        }
-                    }catch (InputMismatchException e){
-                        System.out.println("Invalid input");
-                        //input.nextLine();
+                try {
+                    response = input.nextInt();
+                    switch (response) {
+                        case 1:
+                            System.out.println(new CreateAccount(dbTrans));
+                            break;
+                        case 2:
+                            new LogIn(dbTrans);
+                            break;
                     }
-                } while (response != 0);
+                }catch (InputMismatchException e){
+                    System.out.println("Invalid input");
+                    //input.nextLine();
+                }
+            } while (response != 0);
 
-                System.out.println("\nBye!");
-
-                //Close the Statement Object
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-            //Close the Connection object
-        } catch (SQLException e) {
+            System.out.println("\nBye!");
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

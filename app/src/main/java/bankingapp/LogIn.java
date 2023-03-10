@@ -1,7 +1,6 @@
 
 package bankingapp;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
 
@@ -22,10 +21,10 @@ public class LogIn {
         setPinNumber();
     }
 
-    public LogIn(Connection connection, IDBTrans dbTrans) throws SQLException{
+    public LogIn(IDBTrans dbTrans) throws SQLException{
         this();
         this.dbTrans = dbTrans;
-        checkAccount(connection, getAccountNumber(), getPinNum());
+        checkAccount(getAccountNumber(), getPinNum());
     }
 
     /**
@@ -72,12 +71,12 @@ public class LogIn {
      * Method checkAccount which checks if the user entered account number and password are contained in the
      * database. If the account is available, the user is presented with a menu to carry out different account
      * transactions
-     * @param con
+     *
      * @param accountNumber
      * @param pinNumber
      * @throws SQLException
      */
-    public void checkAccount(Connection con, String accountNumber, String pinNumber) throws SQLException {
+    public void checkAccount(String accountNumber, String pinNumber) throws SQLException {
         if (dbTrans.checkAcc(accountNumber, Integer.parseInt(pinNumber))) {
             System.out.println("\nYou have successfully logged in!");
 

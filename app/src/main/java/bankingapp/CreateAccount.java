@@ -1,6 +1,5 @@
 package bankingapp;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Random;
 import java.util.Scanner;
@@ -25,7 +24,7 @@ public class CreateAccount {
         setPinNumber();
     }
 
-    CreateAccount(Connection connection, IDBTrans dbTrans) throws SQLException{
+    CreateAccount(IDBTrans dbTrans) throws SQLException{
         this();
         dbTrans.insertDB(getFirstName(), getLastName(), getAccountNumber(), String.valueOf(getPinNumber()));
     }
