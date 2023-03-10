@@ -27,11 +27,11 @@ public class App {
 
         //Connect to the database
         try (Connection connection = dataSource.getConnection()) {
-            try (Statement statement = connection.createStatement()) {
+            try (Statement ignored = connection.createStatement()) {
 
                 //Create DB
                 App.dbTrans = new DBTrans(connection);
-                App.dbTrans.createDB(statement);
+                App.dbTrans.createDB();
 
                 int response = -1;
 

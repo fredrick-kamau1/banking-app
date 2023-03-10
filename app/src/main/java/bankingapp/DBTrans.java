@@ -1,7 +1,5 @@
 package bankingapp;
 
-import org.sqlite.SQLiteDataSource;
-
 import java.sql.*;
 import java.util.Scanner;
 
@@ -17,11 +15,12 @@ public class DBTrans implements IDBTrans {
     /**
      * Method createDB creates a new table in the SQLite database if it does not already exist. It takes a Statement
      * object as input and throws an SQLException if there is an error executing the SQL command.
-     * @param statement
+     *
      * @throws SQLException
      */
     @Override
-    public void createDB(Statement statement) throws SQLException {
+    public void createDB() throws SQLException {
+        Statement statement = connection.createStatement();
         statement.executeUpdate("CREATE TABLE IF NOT EXISTS account(" +
                 "first_name TEXT," +
                 "last_name TEXT," +

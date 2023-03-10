@@ -2,10 +2,9 @@ package bankingapp;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public interface IDBTrans {
-    void createDB(Statement statement) throws SQLException;
+    void createDB() throws SQLException;
 
     void insertDB(Connection con, String first_name, String last_name, String accountNumber,
                   String pinNum) throws SQLException;
