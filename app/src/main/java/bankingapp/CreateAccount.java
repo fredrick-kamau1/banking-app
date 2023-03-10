@@ -27,7 +27,7 @@ public class CreateAccount {
 
     CreateAccount(Connection connection, IDBTrans dbTrans) throws SQLException{
         this();
-        dbTrans.insertDB(connection, getFirstName(), getLastName(), getAccountNumber(), String.valueOf(getPinNumber()));
+        dbTrans.insertDB(getFirstName(), getLastName(), getAccountNumber(), String.valueOf(getPinNumber()));
     }
 
     /**

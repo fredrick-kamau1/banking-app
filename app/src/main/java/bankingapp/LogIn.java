@@ -78,7 +78,7 @@ public class LogIn {
      * @throws SQLException
      */
     public void checkAccount(Connection con, String accountNumber, String pinNumber) throws SQLException {
-        if (dbTrans.checkAcc(con, accountNumber, Integer.parseInt(pinNumber))) {
+        if (dbTrans.checkAcc(accountNumber, Integer.parseInt(pinNumber))) {
             System.out.println("\nYou have successfully logged in!");
 
         int answer = -1;
@@ -97,23 +97,23 @@ public class LogIn {
 
             switch (answer) {
                 case 1:
-                    int balance = dbTrans.checkBalance(con, accountNumber);
+                    int balance = dbTrans.checkBalance(accountNumber);
                     System.out.println("\nBalance: " + balance);
                     break;
 
                 case 2:
                     System.out.println("Enter income:");
                     income = scanner.nextInt();
-                    dbTrans.addIncome(con, income, accountNumber);
+                    dbTrans.addIncome(income, accountNumber);
                     System.out.println("Income was added!");
                     break;
 
                 case 3:
-                    dbTrans.transferFunds(con, accountNumber);
+                    dbTrans.transferFunds(accountNumber);
                     break;
 
                 case 4:
-                    dbTrans.deleteAcc(con, accountNumber);
+                    dbTrans.deleteAcc(accountNumber);
                     System.out.println("The account has been closed!");
                     break subMenu;
 
