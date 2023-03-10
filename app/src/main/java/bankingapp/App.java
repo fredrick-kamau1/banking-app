@@ -47,7 +47,7 @@ public class App {
                                 System.out.println(new CreateAccount(connection, dbTrans));
                                 break;
                             case 2:
-                                new LogIn(connection);
+                                new LogIn(connection, dbTrans);
                                 break;
                         }
                     }catch (InputMismatchException e){

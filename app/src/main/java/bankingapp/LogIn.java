@@ -14,6 +14,7 @@ public class LogIn {
     private String accountNumber;
     private String pinNumber;
     private Scanner scanner;
+    private IDBTrans dbTrans;
 
     public LogIn() {
         scanner = new Scanner(System.in);
@@ -21,8 +22,9 @@ public class LogIn {
         setPinNumber();
     }
 
-    public LogIn(Connection connection) throws SQLException{
+    public LogIn(Connection connection, IDBTrans dbTrans) throws SQLException{
         this();
+        this.dbTrans = dbTrans;
         checkAccount(connection, getAccountNumber(), getPinNum());
     }
 
