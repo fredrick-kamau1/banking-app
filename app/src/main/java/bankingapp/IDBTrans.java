@@ -2,7 +2,7 @@ package bankingapp;
 
 import java.sql.SQLException;
 
-public interface IDBTrans {
+public interface IDBTrans extends AutoCloseable {
     void createDB() throws SQLException;
 
     void insertDB(String first_name, String last_name, String accountNumber,

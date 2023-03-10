@@ -30,7 +30,7 @@ public class App {
             try (Statement ignored = connection.createStatement()) {
 
                 //Create DB
-                App.dbTrans = new DBTrans(connection);
+                App.dbTrans = new DBTrans(dataSource);
                 App.dbTrans.createDB();
 
                 int response = -1;

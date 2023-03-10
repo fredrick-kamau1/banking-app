@@ -1,15 +1,17 @@
 package bankingapp;
 
+import org.sqlite.SQLiteDataSource;
+
 import java.sql.*;
 import java.util.Scanner;
 
-public class DBTrans implements IDBTrans {
+public class DBTrans implements IDBTrans, AutoCloseable {
     static Scanner scan;
     private Connection connection;
 
-    public DBTrans(Connection connection) throws SQLException{
+    public DBTrans(SQLiteDataSource dataSource) throws SQLException{
         scan = new Scanner(System.in);
-        this.connection = connection;
+        this.connection = dataSource.getConnection();
     }
 
     /**
@@ -218,5 +220,12 @@ public class DBTrans implements IDBTrans {
             System.out.println("Probably you made a mistake in the card number. Please try again");
 
         }
+    }
+
+    @Override
+    public void close() throws Exception {
+        // Close all resources we're holding on to
+        connection.close();
+        scan.close();
     }
 }
