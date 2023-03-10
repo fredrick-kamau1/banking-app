@@ -44,7 +44,7 @@ public class App {
                         response = input.nextInt();
                         switch (response) {
                             case 1:
-                                System.out.println(new CreateAccount(connection));
+                                System.out.println(new CreateAccount(connection, dbTrans));
                                 break;
                             case 2:
                                 new LogIn(connection);
