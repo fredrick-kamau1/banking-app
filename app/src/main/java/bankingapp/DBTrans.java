@@ -23,7 +23,7 @@ public class DBTrans {
      * @param statement
      * @throws SQLException
      */
-    public static void createDB(Statement statement) throws SQLException {
+    public void createDB(Statement statement) throws SQLException {
         statement.executeUpdate("CREATE TABLE IF NOT EXISTS account(" +
                 "first_name TEXT," +
                 "last_name TEXT," +
@@ -45,7 +45,7 @@ public class DBTrans {
      * @param pinNum
      * @throws SQLException
      */
-    public static void insertDB(Connection con, String first_name, String last_name, String accountNumber,
+    public void insertDB(Connection con, String first_name, String last_name, String accountNumber,
                                 String pinNum) throws SQLException {
         String insert = "INSERT INTO account (first_name, last_name, accountNum, pin) VALUES (?,?,?,?)";
 
@@ -67,7 +67,7 @@ public class DBTrans {
      * @param accountNum
      * @throws SQLException
      */
-    public static void addIncome(Connection con, int income, String accountNum) throws SQLException{
+    public void addIncome(Connection con, int income, String accountNum) throws SQLException{
         String insert = "UPDATE account SET balance = balance + ? WHERE accountNum = ?";
 
         try (PreparedStatement statement = con.prepareStatement(insert)){
@@ -86,7 +86,7 @@ public class DBTrans {
      * @param accountNum
      * @throws SQLException
      */
-    public static void deductBalance(Connection connection, int deduct, String accountNum) throws SQLException{
+    public void deductBalance(Connection connection, int deduct, String accountNum) throws SQLException{
         String insert = "UPDATE account SET balance = balance - ? WHERE accountNum = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(insert)) {
@@ -105,7 +105,7 @@ public class DBTrans {
      * @return
      * @throws SQLException
      */
-    public static int checkBalance(Connection connection, String accountNum) throws SQLException{
+    public int checkBalance(Connection connection, String accountNum) throws SQLException{
         String checkBal = "SELECT balance FROM account WHERE accountNum = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(checkBal)) {
@@ -126,7 +126,7 @@ public class DBTrans {
      * @return isAccountAvailable
      * @throws SQLException
      */
-    public static boolean checkAcc(Connection connection, String accountNum, int pin) throws SQLException{
+    public boolean checkAcc(Connection connection, String accountNum, int pin) throws SQLException{
         boolean isAccountAvailable = false;
         String queryDB = "SELECT * FROM account WHERE accountNum = ? AND pin = ?";
 
@@ -148,7 +148,7 @@ public class DBTrans {
      * @return isAccountAvailable
      * @throws SQLException
      */
-    public static boolean checkAcc_withoutPin(Connection connection, String accountNum) throws SQLException{
+    public boolean checkAcc_withoutPin(Connection connection, String accountNum) throws SQLException{
         boolean isAccountAvailable = false;
         String queryDB = "SELECT * FROM account WHERE accountNum = ?";
 
@@ -167,7 +167,7 @@ public class DBTrans {
      * @param accountNum
      * @throws SQLException
      */
-    public static void deleteAcc(Connection connection, String accountNum) throws SQLException{
+    public void deleteAcc(Connection connection, String accountNum) throws SQLException{
         String queryDB = "DELETE FROM account WHERE accountNum = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(queryDB)){
@@ -182,7 +182,7 @@ public class DBTrans {
      * @param accountNum
      * @throws SQLException
      */
-    public static void transferFunds(Connection connection, String accountNum) throws SQLException {
+    public void transferFunds(Connection connection, String accountNum) throws SQLException {
 
         // Prompt the user for the card number of the account they want to transfer funds to
         System.out.println("Transfer");
