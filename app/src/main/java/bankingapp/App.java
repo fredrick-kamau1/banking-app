@@ -10,8 +10,6 @@ import java.util.Scanner;
 
 public class App {
 
-    private static IDBTrans dbTrans;
-
     /**
      * Main method
      *
