@@ -7,8 +7,6 @@ import java.util.Scanner;
 
 public class DBTrans implements IDBTrans {
     static Scanner scan;
-    static SQLiteDataSource dataSource = new SQLiteDataSource();
-    String url;
     private Connection connection;
 
     public DBTrans(Connection connection) throws SQLException{
