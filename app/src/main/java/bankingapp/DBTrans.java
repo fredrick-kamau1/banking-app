@@ -9,12 +9,11 @@ public class DBTrans implements IDBTrans {
     static Scanner scan;
     static SQLiteDataSource dataSource = new SQLiteDataSource();
     String url;
-    Connection connection;
+    private Connection connection;
 
-    public DBTrans() throws SQLException{
+    public DBTrans(Connection connection) throws SQLException{
         scan = new Scanner(System.in);
-        url = "jdbc:sqlite:account.db";
-        connection = DriverManager.getConnection(url);
+        this.connection = connection;
     }
 
     /**
