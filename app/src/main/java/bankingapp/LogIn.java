@@ -1,7 +1,6 @@
 
 package bankingapp;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
 
@@ -14,6 +13,7 @@ public class LogIn {
     private String accountNumber;
     private String pinNumber;
     private Scanner scanner;
+    private IDBTrans dbTrans;
 
     public LogIn() {
         scanner = new Scanner(System.in);
@@ -21,9 +21,10 @@ public class LogIn {
         setPinNumber();
     }
 
-    public LogIn(Connection connection) throws SQLException{
+    public LogIn(IDBTrans dbTrans) throws SQLException{
         this();
-        checkAccount(connection, getAccountNumber(), getPinNum());
+        this.dbTrans = dbTrans;
+        checkAccount(getAccountNumber(), getPinNum());
     }
 
     /**
@@ -70,13 +71,13 @@ public class LogIn {
      * Method checkAccount which checks if the user entered account number and password are contained in the
      * database. If the account is available, the user is presented with a menu to carry out different account
      * transactions
-     * @param con
+     *
      * @param accountNumber
      * @param pinNumber
      * @throws SQLException
      */
-    public void checkAccount(Connection con, String accountNumber, String pinNumber) throws SQLException {
-        if (DBTrans.checkAcc(con, accountNumber, Integer.parseInt(pinNumber))) {
+    public void checkAccount(String accountNumber, String pinNumber) throws SQLException {
+        if (dbTrans.checkAcc(accountNumber, Integer.parseInt(pinNumber))) {
             System.out.println("\nYou have successfully logged in!");
 
         int answer = -1;
@@ -95,23 +96,23 @@ public class LogIn {
 
             switch (answer) {
                 case 1:
-                    int balance = DBTrans.checkBalance(con, accountNumber);
+                    int balance = dbTrans.checkBalance(accountNumber);
                     System.out.println("\nBalance: " + balance);
                     break;
 
                 case 2:
                     System.out.println("Enter income:");
                     income = scanner.nextInt();
-                    DBTrans.addIncome(con, income, accountNumber);
+                    dbTrans.addIncome(income, accountNumber);
                     System.out.println("Income was added!");
                     break;
 
                 case 3:
-                    DBTrans.transferFunds(con, accountNumber);
+                    dbTrans.transferFunds(accountNumber);
                     break;
 
                 case 4:
-                    DBTrans.deleteAcc(con, accountNumber);
+                    dbTrans.deleteAcc(accountNumber);
                     System.out.println("The account has been closed!");
                     break subMenu;
 
