@@ -10,6 +10,8 @@ import java.util.Scanner;
 
 public class App {
 
+    private static IDBTrans dbTrans;
+
     /**
      * Main method
      *
@@ -28,8 +30,8 @@ public class App {
             try (Statement statement = connection.createStatement()) {
 
                 //Create DB
-                IDBTrans db = new DBTrans();
-                db.createDB(statement);
+                App.dbTrans = new DBTrans();
+                App.dbTrans.createDB(statement);
 
                 int response = -1;
 
