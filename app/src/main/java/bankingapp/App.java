@@ -28,7 +28,7 @@ public class App {
             try (Statement statement = connection.createStatement()) {
 
                 //Create DB
-                DBTrans db = new DBTrans();
+                IDBTrans db = new DBTrans();
                 db.createDB(statement);
 
                 int response = -1;

@@ -5,7 +5,7 @@ import org.sqlite.SQLiteDataSource;
 import java.sql.*;
 import java.util.Scanner;
 
-public class DBTrans {
+public class DBTrans implements IDBTrans {
     static Scanner scan;
     static SQLiteDataSource dataSource = new SQLiteDataSource();
     String url;
@@ -23,6 +23,7 @@ public class DBTrans {
      * @param statement
      * @throws SQLException
      */
+    @Override
     public void createDB(Statement statement) throws SQLException {
         statement.executeUpdate("CREATE TABLE IF NOT EXISTS account(" +
                 "first_name TEXT," +
