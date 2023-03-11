@@ -1,9 +1,6 @@
 package bankingapp;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Random;
-import java.util.Scanner;
 
 /**
  * @author Fredrick. Class CreateAccount that creates a new bank account for a user. The user is required to provide
@@ -15,61 +12,15 @@ public class CreateAccount {
     private String lastName;
     private String accountNumber;
     private int pin;
-    Scanner scanner;
 
-    CreateAccount(){
-        scanner = new Scanner(System.in);
-        setFirstName();
-        setLastName();
-        setAccountNumber();
-        setPinNumber();
+
+    public CreateAccount(){
     }
-
-    CreateAccount(Connection connection) throws SQLException{
-        this();
-        DBTrans.insertDB(connection, getFirstName(), getLastName(), getAccountNumber(), String.valueOf(getPinNumber()));
-    }
-
-    /**
-     * Setter method to set fistName
-     */
-    public void setFirstName(){
-        String firstName;
-        do{
-            System.out.println("Enter First Name:");
-            firstName = scanner.nextLine();
-        }while (firstName.equals(null) || firstName.trim().isEmpty());
-        this.firstName = firstName.trim();
-    }
-
-    /**
-     * Getter method to get the first name
-     * @return firstName
-     */
-    public String getFirstName() {
-        return this.firstName;
-    }
-
-
-    /**
-     * Setter method to set first name
-     */
-    public void setLastName(){
-        String lastName;
-        do {
-            System.out.println("Enter Last Name:");
-            lastName = scanner.nextLine();
-        }while (lastName.equals(null) || lastName.trim().isEmpty());
-        this.lastName = lastName.trim();
-    }
-
-
-    /**
-     * Getter method to get the last name
-     * @return lastName
-     */
-    public String getLastName() {
-        return this.lastName;
+    public CreateAccount(String firstName, String lastName, String accountNumber, int pinNumber){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.accountNumber = accountNumber;
+        this.pin = pinNumber;
     }
 
     /**
@@ -149,7 +100,7 @@ public class CreateAccount {
      * @return String
      */
     public String toString(){
-        return "Thank you "+ getFirstName() + " " + getLastName() +"\nYour account has been created" +
+        return "Thank you "+ this.firstName + " " + this.lastName +"\nYour account has been created" +
                 "\nYour account number is:\n" + getAccountNumber() +
                 "\nYour account PIN:\n" + getPinNumber();
     }
