@@ -3,7 +3,7 @@ package bankingapp;
 import java.util.Random;
 
 /**
- * @author Fredrick. Class CreateAccount that creates a new bank account for a user. The user is required to provide
+ * @author Fredrick Kamau. Class CreateAccount that creates a new bank account for a user. The user is required to provide
  * their first and last name, the system will in turn generate a random account number and PIN-number.
  */
 public class CreateAccount {
